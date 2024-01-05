@@ -1,0 +1,9 @@
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret
+[user]
+	name = Reda Salmi
+	email = reda.salmi.elt@gmail.com
+[core]
+	editor = nano
+[push]
+	autoSetupRemote = true
