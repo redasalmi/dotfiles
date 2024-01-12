@@ -13,6 +13,7 @@ source /usr/share/bash-completion/bash_completion
 source ~/.bash_aliases
 source ~/.bash_functions
 source ~/.bash_npm
+source ~/.bash_pnpm
 
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init bash)"
