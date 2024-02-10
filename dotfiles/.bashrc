@@ -16,4 +16,5 @@ source ~/.bash_npm
 source ~/.bash_pnpm
 
 eval "$(fnm env --use-on-cd)"
+eval "$(rbenv init -)"
 eval "$(starship init bash)"
