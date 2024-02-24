@@ -10,6 +10,7 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 source /usr/share/bash-completion/bash_completion
+source ~/.bash_aliases_work
 source ~/.bash_aliases
 source ~/.bash_functions
 source ~/.bash_npm
