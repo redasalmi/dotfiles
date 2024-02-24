@@ -7,3 +7,5 @@
 	editor = nano
 [push]
 	autoSetupRemote = true
+[init]
+	defaultBranch = main
