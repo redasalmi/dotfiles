@@ -17,7 +17,7 @@ Clone the repo and use stow on the `.dotfiles` folder
 ```bash
   git clone https://github.com/redasalmi/dotfiles.git
   cd dotfiles/.dotfiles
-  stow -t ~/. .
+  stow -t $HOME .
 ```
 
 This will create a symlink between the files under the `.dotfiles` directory and the home folder
