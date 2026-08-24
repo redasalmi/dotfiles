@@ -5,7 +5,6 @@ Packages selected from RPM Fusion, COPR, vendor repositories, or direct RPM inst
 Review the source and repository before installing each package. Keep this category optional so the Fedora baseline remains reproducible.
 
 ```text
-bottom
 chatgpt
 cloudflare-warp
 cmus
@@ -23,12 +22,11 @@ rpmfusion-free-release
 rpmfusion-nonfree-release
 slack
 steam
-xh
 ```
 
 ## Sources observed
 
 - RPM Fusion: `cmus`, `discord`, `ffmpeg`, `jellyfin`, `megasync`, and `steam`.
-- COPR: `ghostty`, `helium-bin`, and `xh`.
-- Vendor repositories or direct RPMs: `chatgpt`, `cloudflare-warp`, `cursor`, `google-chrome-stable`, `slack`, `epson-inkjet-printer-escpr`, `proton-pass`, and `bottom`.
+- COPR: `ghostty` and `helium-bin`.
+- Vendor repositories or direct RPMs: `chatgpt`, `cloudflare-warp`, `cursor`, `google-chrome-stable`, `slack`, `epson-inkjet-printer-escpr`, and `proton-pass`.
 - `rpmfusion-free-release` and `rpmfusion-nonfree-release` enable the RPM Fusion repositories.

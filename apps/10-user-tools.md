@@ -1,14 +1,11 @@
 # User-level tools
 
-Tools installed outside the RPM package database on the current user account.
+Tools installed outside the Fedora RPM package database on the current user account.
 
-## Global npm packages
+## Mise-managed tools
 
-These are installed under the mise-managed Node `24.19.0` installation:
+`mise` manages the runtimes and developer tools declared in `home/.config/mise/config.toml`. The complete tool list and source types are documented in the **Mise-managed tools** section of [MY-APPS.md](MY-APPS.md).
 
-```text
-corepack@0.35.0
-npm@11.17.0
-```
+This includes Node.js with npm and Corepack, Go, Rust, Bun, Deno, pnpm, Yarn, the Pi/Codex/Playwright/Shopify/Chrome DevTools/Lighthouse tools, and other CLI utilities.
 
-No Cargo-installed applications were detected. Keep user-level tools separate from Fedora RPM manifests.
+No separately installed Cargo applications were detected. Keep Mise-managed tools separate from Fedora RPM manifests.

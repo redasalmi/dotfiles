@@ -15,45 +15,65 @@ Firefox is part of the Fedora/KDE system snapshot and is intentionally not inclu
 
 ## Development and AI
 
-| Application or tool                | Source                   | Package or ID                                          |
-| ---------------------------------- | ------------------------ | ------------------------------------------------------ |
-| Cursor                             | Third-party RPM          | `cursor`                                               |
-| Ghostty                            | COPR RPM                 | `ghostty`                                              |
-| Zed                                | User-level application   | `zed`                                                  |
-| Pi coding agent                    | User-level installation  | `pi`                                                   |
-| ChatGPT                            | Vendor RPM               | `chatgpt`                                              |
-| Mise                               | Third-party RPM          | `mise`                                                 |
-| direnv                             | Fedora RPM               | `direnv`                                               |
-| just                               | Fedora RPM               | `just`                                                 |
-| GCC                                | Fedora RPM               | `gcc`, `gcc-c++`                                       |
-| Make                               | Fedora RPM               | `make`                                                 |
-| Meson                              | Fedora RPM               | `meson`                                                |
-| Vala                               | Fedora RPM               | `vala`                                                 |
-| GTK development files              | Fedora RPM               | `gtk3-devel`, `gtk4-devel`                             |
-| Qt development files               | Fedora RPM               | `qt6-qtbase-devel`                                     |
-| WebKit development files           | Fedora RPM               | `webkit2gtk4.1-devel`, `webkitgtk6.0-devel`            |
-| SVG/AppIndicator development files | Fedora RPM               | `librsvg2-devel`, `libayatana-appindicator-gtk3-devel` |
-| npm                                | Mise-managed global tool | `npm`                                                  |
-| Corepack                           | Mise-managed global tool | `corepack`                                             |
+| Application or tool                | Source                 | Package or ID                                          |
+| ---------------------------------- | ---------------------- | ------------------------------------------------------ |
+| Cursor                             | Third-party RPM        | `cursor`                                               |
+| Ghostty                            | COPR RPM               | `ghostty`                                              |
+| Zed                                | User-level application | `zed`                                                  |
+| ChatGPT                            | Vendor RPM             | `chatgpt`                                              |
+| Mise                               | COPR RPM               | `mise`                                                 |
+| direnv                             | Fedora RPM             | `direnv`                                               |
+| just                               | Fedora RPM             | `just`                                                 |
+| GCC                                | Fedora RPM             | `gcc`, `gcc-c++`                                       |
+| Make                               | Fedora RPM             | `make`                                                 |
+| Meson                              | Fedora RPM             | `meson`                                                |
+| Vala                               | Fedora RPM             | `vala`                                                 |
+| GTK development files              | Fedora RPM             | `gtk3-devel`, `gtk4-devel`                             |
+| Qt development files               | Fedora RPM             | `qt6-qtbase-devel`                                     |
+| WebKit development files           | Fedora RPM             | `webkit2gtk4.1-devel`, `webkitgtk6.0-devel`            |
+| SVG/AppIndicator development files | Fedora RPM             | `librsvg2-devel`, `libayatana-appindicator-gtk3-devel` |
+
+## Mise-managed tools
+
+These runtimes and tools are installed and versioned by `mise` from `home/.config/mise/config.toml`, rather than as Fedora or COPR packages.
+
+| Tool                | Mise source       | Configuration key                     |
+| ------------------- | ----------------- | ------------------------------------- |
+| ast-grep            | Mise registry     | `ast-grep`                            |
+| Bottom              | Mise registry     | `bottom`                              |
+| Bun                 | Mise registry     | `bun`                                 |
+| Deno                | Mise registry     | `deno`                                |
+| oh-my-pi            | GitHub repository | `github:can1357/oh-my-pi`             |
+| Go                  | Mise registry     | `go`                                  |
+| Node.js             | Mise registry     | `node`                                |
+| Pi coding agent     | npm package       | `npm:@earendil-works/pi-coding-agent` |
+| OpenAI Codex        | npm package       | `npm:@openai/codex`                   |
+| Playwright CLI      | npm package       | `npm:@playwright/cli`                 |
+| Shopify CLI         | npm package       | `npm:@shopify/cli`                    |
+| Chrome DevTools MCP | npm package       | `npm:chrome-devtools-mcp`             |
+| Lighthouse          | npm package       | `npm:lighthouse`                      |
+| pnpm                | Mise registry     | `pnpm`                                |
+| Rust                | Mise registry     | `rust`                                |
+| usage               | Mise registry     | `usage`                               |
+| xh                  | Mise registry     | `xh`                                  |
+| Yarn                | Mise registry     | `yarn`                                |
 
 ## Shell and CLI
 
-| Tool      | Source          | Package     |
-| --------- | --------------- | ----------- |
-| Fish      | Fedora RPM      | `fish`      |
-| Atuin     | Fedora RPM      | `atuin`     |
-| Bottom    | Third-party RPM | `bottom`    |
-| btop      | Fedora RPM      | `btop`      |
-| Dust      | Fedora RPM      | `du-dust`   |
-| Duf       | Fedora RPM      | `duf`       |
-| Eza       | Fedora RPM      | `eza`       |
-| Fastfetch | Fedora RPM      | `fastfetch` |
-| Micro     | Fedora RPM      | `micro`     |
-| NVTOP     | Fedora RPM      | `nvtop`     |
-| ripgrep   | Fedora RPM      | `ripgrep`   |
-| Tokei     | Fedora RPM      | `tokei`     |
-| xh        | COPR RPM        | `xh`        |
-| Zoxide    | Fedora RPM      | `zoxide`    |
+| Tool      | Source     | Package     |
+| --------- | ---------- | ----------- |
+| Fish      | Fedora RPM | `fish`      |
+| Atuin     | Fedora RPM | `atuin`     |
+| btop      | Fedora RPM | `btop`      |
+| Dust      | Fedora RPM | `du-dust`   |
+| Duf       | Fedora RPM | `duf`       |
+| Eza       | Fedora RPM | `eza`       |
+| Fastfetch | Fedora RPM | `fastfetch` |
+| Micro     | Fedora RPM | `micro`     |
+| NVTOP     | Fedora RPM | `nvtop`     |
+| ripgrep   | Fedora RPM | `ripgrep`   |
+| Tokei     | Fedora RPM | `tokei`     |
+| Zoxide    | Fedora RPM | `zoxide`    |
 
 ## System, security, and hardware
 
@@ -131,4 +151,4 @@ They should remain optional and be enabled only when installing the applications
 - Fedora/KDE base applications such as Firefox, Dolphin, Konsole, and the Plasma desktop.
 - Packages installed only as dependencies of the applications above.
 - Kernel updates and hardware/runtime components from system updates.
-- Packages later removed, including Rustup, Go, MPD, and Francis.
+- Packages later removed from the RPM inventory, including Rustup, MPD, and Francis. Go is now managed by Mise.

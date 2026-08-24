@@ -1,5 +1,6 @@
 [tools]
 ast-grep = "latest"
+bottom = "latest"
 bun = "latest"
 deno = "latest"
 "github:can1357/oh-my-pi" = "latest"
@@ -14,6 +15,7 @@ node = "lts"
 pnpm = "latest"
 rust = "stable"
 usage = "latest"
+xh = "latest"
 yarn = "1.22.22"
 
 [settings.npm]
