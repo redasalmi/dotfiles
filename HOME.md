@@ -6,7 +6,10 @@ The `home/` directory contains the portable configuration selected from the curr
 
 - Bash startup and Git configuration: `.bash_profile`, `.bashrc`, `.gitconfig`, and `.gtkrc-2.0`.
 - Fish configuration, portable functions, and command completions under `.config/fish/`.
-- Terminal, shell, editor, and tool configuration for Atuin, Ghostty, GTK, KDE, Mise, Xournal++, XSettingsD, and Zed.
+- Terminal, shell, editor, and tool configuration for Atuin, Ghostty, GTK, Mise, Xournal++, XSettingsD, and Zed.
+- Portable KDE Plasma and KDE application settings under `.config/`, including global colors/fonts, shortcuts, Konsole, KWin, Plasma, power management, Dolphin, Ark, Gwenview, Okular, Spectacle, and file associations.
+- Per-user autostart entries under `.config/autostart/` for Discord (minimized), MEGAsync, and Xpad.
+- Portable creative and gaming settings for Krita, Inkscape, MangoHud, and vkBasalt.
 - Pi configuration, themes, extensions, skills, portable skill-evaluation source, and dependency manifests under `.pi/agent/`.
 - Rustup shell environment files under `.cargo/`.
 
@@ -17,6 +20,8 @@ The Fish configuration was made portable before copying: project-specific direct
 - Credentials and private material: `.ssh/`, `.gnupg/`, `.pki/`, `.aspnet/`, Fish secrets, Pi auth, Codex auth, and application credential files.
 - `spotdl` configuration because it contains service credentials and tokens.
 - Browser profiles and application state for Chromium, Chrome, Firefox, Helium, Discord, Slack, Proton Pass, and similar applications.
+- KDE machine state: display output layouts, Plasma widget/panel layout, activities, recent-file lists, notification/update history, Bluetooth device state, and remote-desktop certificates.
+- Other machine-specific or generated application state, including Godot editor paths, GIMP indexes, qBittorrent download paths, music-player history, and telemetry/authentication files.
 - Shell/history data, caches, logs, sockets, lock files, databases, sessions, and generated state.
 - Pi sessions, caches, installed binaries, model caches, trust data, cloned package repositories, installed dependencies, and generated skill-evaluation results.
 - Machine-specific project trust and absolute-path configuration from Codex.

@@ -1,0 +1,12 @@
+[Annotations]
+annotationToolType=6
+rectangleFillColor=255,0,0,0
+rectangleStrokeColor=255,0,0
+textFont=Inter,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+textFontColor=255,0,0
+
+[ImageSave]
+translatedScreenshotsFolder=Screenshots
+
+[VideoSave]
+translatedScreencastsFolder=Screencasts

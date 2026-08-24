@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Discord (minimized)
+Comment=Start Discord minimized at KDE login.
+Exec=discord --start-minimized
+Icon=discord
+Hidden=false
+NoDisplay=false
+StartupNotify=false
+X-KDE-autostart-after=panel
+X-KDE-StartupNotify=false

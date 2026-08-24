@@ -15,6 +15,7 @@ home/.config/**/history*
 home/.config/**/privateKey.pem
 home/.config/**/certificate.pem
 home/.config/**/service.json
+home/.config/**/sanity/
 
 # Tool state, caches, sessions, and generated data
 home/.cache/
@@ -50,6 +51,8 @@ home/.config/**/command-history
 home/.config/**/autosave
 home/.config/**/playlists/
 home/.config/**/trashrc
+home/.config/**/MangoHud/*.log
+home/.config/**/vkBasalt/*.log
 
 # Local machine and application state
 home/.bash_history
@@ -58,6 +61,20 @@ home/.config/fish/fish_variables
 home/.config/**/dconf/
 home/.config/**/akonadi/
 home/.config/**/kdeconnect/
+home/.config/**/konsolesshconfig
+home/.config/**/krdpserverrc
+home/.config/**/bluedevilglobalrc
+home/.config/**/kwalletrc
+home/.config/**/kactivitymanagerd*
+home/.config/**/kconf_updaterc
+home/.config/**/kded6rc
+home/.config/**/KDE/UserFeedback.conf
+home/.config/**/plasmanotifyrc
+home/.config/**/plasma-welcomerc
+home/.config/**/powermanagementprofilesrc
+home/.config/**/systemmonitorrc
+home/.config/**/partitionmanagerrc
+home/.config/**/QtProject.conf
 home/.config/**/kwinoutputconfig.json
 home/.config/**/plasma-org.kde.plasma.desktop-appletsrc
 home/.config/**/session/
