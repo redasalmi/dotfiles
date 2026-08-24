@@ -1,0 +1,150 @@
+{
+  "disable_ai": false,
+  "cli_default_open_behavior": "new_window",
+  "git_panel": {
+    "tree_view": true,
+    "dock": "left",
+  },
+  "agent": {
+    "sidebar_side": "right",
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "GitHub Dark",
+  },
+
+  "base_keymap": "VSCode",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme",
+  },
+
+  "auto_update": true,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false,
+  },
+
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry",
+    },
+  },
+  "edit_predictions": {
+    "provider": "mercury",
+  },
+
+  "ui_font_family": "Inter",
+  "ui_font_size": 15,
+
+  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_size": 14,
+  "buffer_font_features": {
+    "calt": true,
+  },
+
+  "tab_size": 2,
+  "preferred_line_length": 120,
+  "soft_wrap": "bounded",
+  "show_wrap_guides": true,
+
+  "format_on_save": "on",
+  "prettier": {
+    "allowed": true,
+  },
+  "use_on_type_format": false,
+
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+    },
+  },
+  "sticky_scroll": {
+    "enabled": true,
+  },
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware",
+  },
+  "colorize_brackets": true,
+  "minimap": {
+    "show": "never",
+  },
+
+  "terminal": {
+    "font_family": "JetBrains Mono",
+    "font_size": 14,
+    "cursor_shape": "bar",
+    "alternate_scroll": "on",
+  },
+
+  "languages": {
+    "JavaScript": {
+      "formatter": "prettier",
+    },
+    "TypeScript": {
+      "formatter": "prettier",
+    },
+    "JSON": {
+      "formatter": "prettier",
+    },
+    "CSS": {
+      "formatter": "prettier",
+    },
+    "HTML": {
+      "formatter": "prettier",
+    },
+    "Liquid": {
+      "language_servers": [
+        "liquid",
+        "liquid-embedded-javascript",
+        "tailwindcss-language-server",
+        "emmet-language-server",
+      ],
+      "formatter": "prettier",
+    },
+    "Go": {
+      "formatter": {
+        "language_server": {
+          "name": "gopls",
+        },
+      },
+    },
+  },
+
+  "lsp": {
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always",
+          },
+        },
+        "javascript": {
+          "updateImportsOnFileMove": {
+            "enabled": "always",
+          },
+        },
+      },
+      "enable_lsp_tasks": true,
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "tailwindCSS": {
+          "includeLanguages": {
+            "liquid": "html",
+          },
+        },
+      },
+    },
+  },
+}

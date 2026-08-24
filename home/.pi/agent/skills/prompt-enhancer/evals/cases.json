@@ -1,0 +1,61 @@
+{
+  "skill": "prompt-enhancer",
+  "cases": [
+    {
+      "id": "concise-email",
+      "description": "Improve a small writing prompt without expanding it into a template-heavy mega-prompt.",
+      "prompt": "Use the prompt-enhancer skill. mode=concise prompt-only. Improve this prompt: `Write an email telling a customer their shipment is two days late. Be apologetic, do not promise a delivery date, and keep it under 120 words.`",
+      "assertions": [
+        { "kind": "regex", "pattern": "customer|shipment" },
+        { "kind": "regex", "pattern": "120 words" },
+        { "kind": "regex", "pattern": "do not.*(?:promise|guarantee).*delivery" },
+        { "kind": "not_regex", "pattern": "## Key improvements|## Assumptions" },
+        { "kind": "max_words", "value": 90 }
+      ],
+      "manual_rubric": [
+        "Preserves every constraint and does not add invented company, order, or delivery details.",
+        "Adds at most a useful audience/output clarification rather than ceremonial sections.",
+        "Returns only a directly usable prompt."
+      ]
+    },
+    {
+      "id": "pi-coding-task",
+      "description": "Turn a vague coding request into an executable Pi task using active capabilities without hardcoding imaginary tools.",
+      "fixture": "clean-change",
+      "prompt": "Use the prompt-enhancer skill. target=pi mode=standard prompt-only. Improve this prompt for the current repository: `Fix the pagination issue and make sure it works.` Do not execute the resulting prompt.",
+      "assertions": [
+        { "kind": "regex", "pattern": "pagination|page size" },
+        { "kind": "regex", "pattern": "inspect|reproduce|relevant files" },
+        { "kind": "regex", "pattern": "test|checks|validation" },
+        { "kind": "not_regex", "pattern": "deploy|publish|open a pull request" },
+        { "kind": "not_regex", "pattern": "## Key improvements|## Assumptions" },
+        { "kind": "max_words", "value": 300 },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Adds a concrete investigation, implementation, and verification loop without assuming the bug's cause.",
+        "Uses Pi/repository capabilities semantically and does not paste skill instructions or invent unavailable integrations.",
+        "Defines completion while preserving the user's request to implement rather than only plan."
+      ]
+    },
+    {
+      "id": "multiple-deliverables",
+      "description": "Preserve legitimate related deliverables instead of collapsing them into one output.",
+      "prompt": "Use the prompt-enhancer skill. target=generic mode=standard prompt-only. Improve: `Analyze the attached parser logs, identify the root cause, propose a fix, write the patch, and update the troubleshooting docs. Do not change the public API.`",
+      "assertions": [
+        { "kind": "regex", "pattern": "logs" },
+        { "kind": "regex", "pattern": "root cause" },
+        { "kind": "regex", "pattern": "patch|implement" },
+        { "kind": "regex", "pattern": "troubleshooting" },
+        { "kind": "regex", "pattern": "public (?:API|symbols|signatures)|API contracts" },
+        { "kind": "not_regex", "pattern": "## Key improvements|## Assumptions" },
+        { "kind": "max_words", "value": 260 }
+      ],
+      "manual_rubric": [
+        "Retains all related deliverables and orders them coherently.",
+        "Does not assume access to a repository or tools when target=generic.",
+        "Keeps the public API constraint prominent and adds no unrelated scope."
+      ]
+    }
+  ]
+}

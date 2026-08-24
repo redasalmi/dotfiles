@@ -1,0 +1,225 @@
+import {
+  DEFAULT_MAX_BYTES,
+  DEFAULT_MAX_LINES,
+  formatSize,
+  truncateHead,
+  type ExtensionAPI,
+} from "@earendil-works/pi-coding-agent";
+import { StringEnum } from "@earendil-works/pi-ai";
+import { Type } from "typebox";
+
+const EXA_API = "https://api.exa.ai";
+const REQUEST_TIMEOUT_MS = 20_000;
+const DEFAULT_RESULTS = 5;
+const MAX_RESULTS = 10;
+const DEFAULT_HIGHLIGHT_CHARACTERS = 2_000;
+const DEFAULT_FETCH_CHARACTERS = 10_000;
+
+interface ExaResult {
+  title?: string | null;
+  url?: string;
+  publishedDate?: string;
+  author?: string;
+  highlights?: string[];
+  text?: string;
+}
+
+interface ExaResponse {
+  results?: ExaResult[];
+  error?: string;
+  message?: string;
+}
+
+export interface WebSearchHit {
+  title: string;
+  url: string;
+  excerpt?: string;
+  publishedDate?: string;
+  author?: string;
+}
+
+export interface WebSearchOptions {
+  query: string;
+  numResults?: number;
+  type?: "auto" | "fast" | "instant";
+  includeDomains?: string[];
+  excludeDomains?: string[];
+  maxAgeHours?: number;
+}
+
+function apiKey(): string {
+  const key = process.env.EXA_API_KEY?.trim();
+  if (!key) throw new Error("EXA_API_KEY is not set. Export it before starting Pi, then run /reload.");
+  return key;
+}
+
+function requestSignal(signal: AbortSignal | undefined): AbortSignal {
+  const timeout = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  return signal ? AbortSignal.any([signal, timeout]) : timeout;
+}
+
+async function exaRequest(path: string, body: unknown, signal: AbortSignal | undefined): Promise<ExaResponse> {
+  const response = await fetch(`${EXA_API}${path}`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": apiKey(),
+    },
+    body: JSON.stringify(body),
+    signal: requestSignal(signal),
+  });
+
+  const payload = (await response.json().catch(() => ({}))) as ExaResponse;
+  if (!response.ok) {
+    throw new Error(
+      `Exa request failed (HTTP ${response.status}): ${payload.error ?? payload.message ?? response.statusText}`,
+    );
+  }
+  return payload;
+}
+
+function toSearchHit(result: ExaResult): WebSearchHit {
+  return {
+    title: result.title?.trim() || "Untitled",
+    url: result.url ?? "Unknown",
+    excerpt: result.highlights?.filter(Boolean).join(" … ").trim() || undefined,
+    publishedDate: result.publishedDate ?? undefined,
+    author: result.author ?? undefined,
+  };
+}
+
+function resultText(result: ExaResult, index: number): string {
+  const hit = toSearchHit(result);
+  const lines = [`${index + 1}. ${hit.title}`, `   URL: ${hit.url}`];
+  if (result.publishedDate) lines.push(`   Published: ${result.publishedDate}`);
+  if (result.author) lines.push(`   Author: ${result.author}`);
+  if (hit.excerpt) lines.push(`   Excerpt: ${hit.excerpt}`);
+  return lines.join("\n");
+}
+
+function truncateOutput(text: string): string {
+  const truncated = truncateHead(text, { maxBytes: DEFAULT_MAX_BYTES, maxLines: DEFAULT_MAX_LINES });
+  if (!truncated.truncated) return truncated.content;
+  return `${truncated.content}\n\n[Output truncated to ${formatSize(truncated.outputBytes)} of ${formatSize(truncated.totalBytes)}.]`;
+}
+
+export async function searchWeb(options: WebSearchOptions, signal?: AbortSignal): Promise<WebSearchHit[]> {
+  const payload = await exaRequest(
+    "/search",
+    {
+      query: options.query,
+      type: options.type ?? "auto",
+      numResults: Math.min(Math.max(options.numResults ?? DEFAULT_RESULTS, 1), MAX_RESULTS),
+      ...(options.includeDomains?.length ? { includeDomains: options.includeDomains } : {}),
+      ...(options.excludeDomains?.length ? { excludeDomains: options.excludeDomains } : {}),
+      contents: {
+        highlights: { maxCharacters: DEFAULT_HIGHLIGHT_CHARACTERS },
+        ...(options.maxAgeHours !== undefined ? { maxAgeHours: options.maxAgeHours } : {}),
+      },
+    },
+    signal,
+  );
+  return (payload.results ?? []).map(toSearchHit).filter((hit) => /^https?:\/\//i.test(hit.url));
+}
+
+function validateUrl(value: string): string {
+  const url = new URL(value);
+  if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error("URL must use HTTP or HTTPS.");
+  return url.toString();
+}
+
+export default function (pi: ExtensionAPI) {
+  pi.registerTool({
+    name: "web_search",
+    label: "Web Search",
+    description:
+      "Search the current web with Exa and return compact, query-relevant excerpts. Defaults to 5 results and never fetches full pages.",
+    promptSnippet: "Search the current web with compact, cited Exa results",
+    promptGuidelines: [
+      "Use web_search when current or externally sourced information is needed; prefer official documentation, upstream repositories, standards, and release notes.",
+      "Use web_fetch only for the most relevant URLs returned by web_search instead of fetching every result.",
+      "For substantive research, synthesize multiple sources and verify important or surprising claims when practical instead of listing search results.",
+      "Keep research concise and practical: prioritize recent sources for fast-moving topics, include relevant versions or dates, link primary sources, and explain material source conflicts.",
+    ],
+    parameters: Type.Object({
+      query: Type.String({ minLength: 1, description: "Specific search query" }),
+      numResults: Type.Optional(
+        Type.Integer({ minimum: 1, maximum: MAX_RESULTS, description: "Number of results; defaults to 5" }),
+      ),
+      type: Type.Optional(
+        StringEnum(["auto", "fast", "instant"] as const, { description: "Search mode; defaults to auto" }),
+      ),
+      includeDomains: Type.Optional(Type.Array(Type.String(), { maxItems: 10, description: "Domains to include" })),
+      excludeDomains: Type.Optional(Type.Array(Type.String(), { maxItems: 10, description: "Domains to exclude" })),
+      maxAgeHours: Type.Optional(
+        Type.Integer({ minimum: -1, description: "Maximum cached-content age; 0 forces live crawl, -1 forbids it" }),
+      ),
+    }),
+    async execute(_toolCallId, params, signal) {
+      const payload = await exaRequest(
+        "/search",
+        {
+          query: params.query,
+          type: params.type ?? "auto",
+          numResults: params.numResults ?? DEFAULT_RESULTS,
+          ...(params.includeDomains?.length ? { includeDomains: params.includeDomains } : {}),
+          ...(params.excludeDomains?.length ? { excludeDomains: params.excludeDomains } : {}),
+          contents: {
+            highlights: { maxCharacters: DEFAULT_HIGHLIGHT_CHARACTERS },
+            ...(params.maxAgeHours !== undefined ? { maxAgeHours: params.maxAgeHours } : {}),
+          },
+        },
+        signal,
+      );
+      const results = payload.results ?? [];
+      const text = results.length ? results.map(resultText).join("\n\n") : "No results found.";
+      return { content: [{ type: "text", text: truncateOutput(text) }], details: { resultCount: results.length } };
+    },
+  });
+
+  pi.registerTool({
+    name: "web_fetch",
+    label: "Web Fetch",
+    description:
+      "Extract compact readable text from one known HTTP(S) URL through Exa. Output is capped at 10,000 characters by default.",
+    promptSnippet: "Fetch focused readable content from one known web URL",
+    parameters: Type.Object({
+      url: Type.String({ description: "HTTP(S) URL to retrieve" }),
+      query: Type.Optional(
+        Type.String({ description: "Optional focus question; returns relevant highlights instead of broad page text" }),
+      ),
+      maxCharacters: Type.Optional(
+        Type.Integer({ minimum: 500, maximum: 10_000, description: "Content cap; defaults to 10,000" }),
+      ),
+      maxAgeHours: Type.Optional(
+        Type.Integer({ minimum: -1, description: "Maximum cached-content age; 0 forces live crawl, -1 forbids it" }),
+      ),
+    }),
+    async execute(_toolCallId, params, signal) {
+      const url = validateUrl(params.url);
+      const maxCharacters = params.maxCharacters ?? DEFAULT_FETCH_CHARACTERS;
+      const content = params.query
+        ? { highlights: { query: params.query, maxCharacters } }
+        : { text: { maxCharacters, verbosity: "compact" } };
+      const payload = await exaRequest(
+        "/contents",
+        {
+          urls: [url],
+          ...content,
+          ...(params.maxAgeHours !== undefined ? { maxAgeHours: params.maxAgeHours } : {}),
+        },
+        signal,
+      );
+      const result = payload.results?.[0];
+      if (!result) return { content: [{ type: "text", text: "No content returned for this URL." }], details: { url } };
+      const body = params.query ? result.highlights?.filter(Boolean).join("\n\n") : result.text;
+      const text = [
+        `Title: ${result.title?.trim() || "Untitled"}`,
+        `URL: ${result.url ?? url}`,
+        "",
+        body?.trim() || "No readable content returned.",
+      ].join("\n");
+      return { content: [{ type: "text", text: truncateOutput(text) }], details: { url: result.url ?? url } };
+    },
+  });
+}

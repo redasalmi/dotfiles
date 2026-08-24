@@ -1,0 +1,20 @@
+[tools]
+ast-grep = "latest"
+bun = "latest"
+deno = "latest"
+"github:can1357/oh-my-pi" = "latest"
+go = "latest"
+node = "lts"
+"npm:@earendil-works/pi-coding-agent" = "latest"
+"npm:@openai/codex" = "latest"
+"npm:@playwright/cli" = "latest"
+"npm:@shopify/cli" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"npm:lighthouse" = "latest"
+pnpm = "latest"
+rust = "stable"
+usage = "latest"
+yarn = "1.22.22"
+
+[settings.npm]
+shell_out = true

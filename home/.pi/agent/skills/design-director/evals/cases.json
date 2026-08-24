@@ -1,0 +1,45 @@
+{
+  "skill": "design-director",
+  "cases": [
+    {
+      "id": "rendered-review",
+      "description": "Review an intentionally flawed responsive settings screen from actual screenshots without editing it.",
+      "fixture": "poor-settings",
+      "prompt": "Use the design-director skill in Review mode. Review the account settings page documented in README.md. Run the existing capture script, inspect the resulting screenshots, and return prioritized evidence-based findings. Do not modify tracked files.",
+      "assertions": [
+        { "kind": "file_exists", "path": "artifacts/settings-360.png" },
+        { "kind": "file_exists", "path": "artifacts/settings-1440.png" },
+        { "kind": "regex", "pattern": "\\[High\\]|High" },
+        { "kind": "regex", "pattern": "360|320|narrow" },
+        { "kind": "regex", "pattern": "horizontal|overflow|fixed width|clip" },
+        { "kind": "regex", "pattern": "contrast|focus" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Uses the rendered 360px and 1440px evidence rather than reviewing CSS alone.",
+        "Prioritizes the fixed-width mobile overflow and inaccessible low contrast/focus treatment over aesthetic preferences.",
+        "Names screen/viewport, visible symptom, user impact, and correction direction for each material finding.",
+        "Does not present subjective dislike of cards, gradients, or pills as a blocker."
+      ]
+    },
+    {
+      "id": "divergent-exploration",
+      "description": "Generate product-derived, genuinely different visual directions for a desktop research tool.",
+      "prompt": "Use the design-director skill in Explore mode. Product: a local-first desktop app for investigative journalists to collect documents, connect people and events, and build a source-backed timeline. Users work for hours with keyboard and pointer. The app must feel trustworthy and focused, but not like a generic enterprise dashboard. Propose three directions, recommend one, explain tradeoffs, and do not write code.",
+      "assertions": [
+        { "kind": "min_regex", "pattern": "tradeoff", "value": 3 },
+        { "kind": "regex", "pattern": "recommend" },
+        { "kind": "regex", "pattern": "desktop|keyboard" },
+        { "kind": "regex", "pattern": "timeline|source|document" },
+        { "kind": "not_regex", "pattern": "Here are three color palettes" },
+        { "kind": "max_words", "value": 1100 }
+      ],
+      "manual_rubric": [
+        "Each option differs materially in composition, density, typography, geometry, interaction, and signature device—not merely color.",
+        "Names are product-specific rather than copied catalog family labels.",
+        "The recommendation balances investigative trust, source traceability, long-session density, keyboard use, and implementation feasibility.",
+        "No fake user research, metrics, or visual references are claimed."
+      ]
+    }
+  ]
+}

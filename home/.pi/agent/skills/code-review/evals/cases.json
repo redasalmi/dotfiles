@@ -1,0 +1,60 @@
+{
+  "skill": "code-review",
+  "cases": [
+    {
+      "id": "auth-bypass",
+      "description": "Find a seeded cross-customer authorization regression without inventing unrelated findings.",
+      "fixture": "auth-bug",
+      "prompt": "Use the code-review skill to review head {head} against base {base}. Return the normal PR-style review and do not modify files.",
+      "assertions": [
+        { "kind": "regex", "pattern": "src/auth\\.js" },
+        { "kind": "regex", "pattern": "authoriz|non-owner|other customer|another customer|customerId" },
+        { "kind": "regex", "pattern": "### \\[P[0-3]\\]" },
+        { "kind": "not_regex", "pattern": "No material findings" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Explains that any signed-in user can view an invoice belonging to another customer because a non-empty customerId is treated as authorization.",
+        "Cites the changed return expression in src/auth.js and suggests comparing invoice.customerId with user.id.",
+        "Notes the missing non-owner regression case without turning the review into a generic testing lecture.",
+        "Does not report preference-only or unrelated issues."
+      ]
+    },
+    {
+      "id": "clean-change",
+      "description": "Avoid false-positive findings on a small, specified, fully tested change.",
+      "fixture": "clean-change",
+      "prompt": "Use the code-review skill to review head {head} against base {base}. Be strict about the finding quality bar. Do not modify files.",
+      "assertions": [
+        { "kind": "regex", "pattern": "No material findings" },
+        { "kind": "not_regex", "pattern": "### \\[P[0-3]\\]" },
+        { "kind": "max_words", "value": 350 },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Checks the README contract and tests before concluding the change is clean.",
+        "Does not speculate about unsupported requirements such as accepting fractional page sizes.",
+        "Reports actual verification and residual risk concisely."
+      ]
+    },
+    {
+      "id": "large-generated-diff",
+      "description": "Find a small human-authored transfer defect inside a noisy generated-file refresh and report review coverage honestly.",
+      "fixture": "large-mixed",
+      "prompt": "Use the code-review skill to review head {head} against base {base}. The generated catalog files are expected output, but review the complete PR scope and do not modify files.",
+      "assertions": [
+        { "kind": "regex", "pattern": "src/transfer\\.js" },
+        { "kind": "regex", "pattern": "negative|non-positive|greater than zero|amount > 0" },
+        { "kind": "regex", "pattern": "### \\[P[0-3]\\]" },
+        { "kind": "not_regex", "pattern": "No material findings" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Separates generated catalog noise from the human-authored transfer validation change.",
+        "Explains that zero or negative transfers now pass when they are below the balance.",
+        "Does not pretend to deeply review every generated value and reports any coverage limitation honestly.",
+        "Avoids unrelated generated-file style comments."
+      ]
+    }
+  ]
+}

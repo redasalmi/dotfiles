@@ -1,0 +1,45 @@
+{
+  "skill": "jira-steps-to-test",
+  "cases": [
+    {
+      "id": "browser-bug-fix",
+      "description": "Produce paste-safe nontechnical Jira Cloud steps for a visible coupon bug fix.",
+      "fixture": "coupon-fix",
+      "prompt": "Use the jira-steps-to-test skill with base={base}, head={head}, format=jira-cloud. Ticket SHOP-214: On the Cart page, entering lowercase `save10` currently shows `Invalid promo code`. On the fixed QA build it must accept lowercase or surrounding spaces, apply a 10% discount, and show a $90.00 total for a cart with a $100.00 subtotal. Generate steps for nontechnical browser QA; do not execute the tests.",
+      "assertions": [
+        { "kind": "regex", "pattern": "## QA scope" },
+        { "kind": "regex", "pattern": "### TC1.*Core" },
+        { "kind": "regex", "pattern": "\\*\\*Action:\\*\\*" },
+        { "kind": "regex", "pattern": "\\*\\*Expected:\\*\\*" },
+        { "kind": "regex", "pattern": "save10" },
+        { "kind": "regex", "pattern": "90\\.00|\\$90" },
+        { "kind": "not_regex", "pattern": "\\|\\s*#\\s*\\|\\s*Action" },
+        { "kind": "not_regex", "pattern": "src/coupon|normalizedCode|git diff" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Starts with the original lowercase trigger and explicitly verifies the old error is absent.",
+        "Uses visible labels from the Cart page and gives observable expected results for every action.",
+        "Includes a nearby uppercase SAVE10 regression and invalid-code behavior without generic browser boilerplate.",
+        "Separates unknown environment/account setup from executable steps."
+      ]
+    },
+    {
+      "id": "backend-only-change",
+      "description": "Refuse to invent browser steps for an internal telemetry batching change.",
+      "fixture": "backend-only",
+      "prompt": "Use the jira-steps-to-test skill with base={base}, head={head}, format=plain. Generate manual website QA steps for OPS-88. The ticket only says: batch internal telemetry events in groups of 50. Do not invent product behavior.",
+      "assertions": [
+        { "kind": "regex", "pattern": "Technical coverage gaps" },
+        { "kind": "regex", "pattern": "not observable|cannot be verified|no product UI|not visible" },
+        { "kind": "not_regex", "pattern": "(?m)^\\s*\\d+\\.\\s+.*(?:click|select).*(?:button|menu)" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "States plainly that browser-only QA cannot prove telemetry batch size.",
+        "Does not fabricate a telemetry page, admin menu, browser console, or DevTools workflow.",
+        "Points to automated/integration verification as a technical gap while keeping any legitimate smoke check clearly limited."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "skill": "pr-description",
+  "cases": [
+    {
+      "id": "github-template",
+      "description": "Honor a GitHub repository template and describe an order-note feature truthfully.",
+      "fixture": "github-pr",
+      "prompt": "Use the pr-description skill to draft the PR body for head {head} into base {base}. Do not publish the PR. Output the paste-ready body only.",
+      "assertions": [
+        { "kind": "regex", "pattern": "## Summary" },
+        { "kind": "regex", "pattern": "## Validation" },
+        { "kind": "regex", "pattern": "## Risk and rollout" },
+        { "kind": "regex", "pattern": "## Reviewer focus" },
+        { "kind": "regex", "pattern": "order[- ]note" },
+        { "kind": "regex", "pattern": "500" },
+        { "kind": "not_regex", "pattern": "\\A\\s*```(?:markdown)?" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Describes optional checkout notes and the 500-character constraint without listing every file.",
+        "Preserves the repository template instead of replacing Validation with a generic Testing section.",
+        "Distinguishes tests present in the diff from commands actually executed.",
+        "Calls out the validation boundary as useful reviewer focus without inventing rollout claims."
+      ]
+    },
+    {
+      "id": "azure-target-template",
+      "description": "Detect Azure Repos and apply the main-target branch-specific template from the default branch.",
+      "fixture": "azure-pr",
+      "prompt": "Use the pr-description skill to draft a pull request body for head {head} targeting base {base}. Detect provider/template conventions from the repository. Do not publish anything. Output the body only.",
+      "assertions": [
+        { "kind": "regex", "pattern": "## Main branch change" },
+        { "kind": "regex", "pattern": "## Database compatibility" },
+        { "kind": "regex", "pattern": "## Validation evidence" },
+        { "kind": "regex", "pattern": "## Rollback" },
+        { "kind": "regex", "pattern": "timezone" },
+        { "kind": "regex", "pattern": "nullable|null|UTC" },
+        { "kind": "not_regex", "pattern": "## Change summary" },
+        { "kind": "not_regex", "pattern": "\\A\\s*```(?:markdown)?" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Uses the target-branch template instead of the generic Azure default.",
+        "Explains compatibility for existing null rows and the UTC fallback.",
+        "Does not claim migration execution, CI success, or rollback validation without evidence."
+      ]
+    },
+    {
+      "id": "no-template-small-change",
+      "description": "Keep a tiny template-free PR description proportional and factual.",
+      "fixture": "clean-change",
+      "prompt": "Use the pr-description skill for head {head} into base {base}. There is no linked issue. Draft the body only and keep it proportional to the change.",
+      "assertions": [
+        { "kind": "regex", "pattern": "## Summary" },
+        { "kind": "regex", "pattern": "## Testing" },
+        { "kind": "regex", "pattern": "page[- ]size|normalizePageSize" },
+        { "kind": "max_words", "value": 350 },
+        { "kind": "not_regex", "pattern": "enhances user experience|ensures robustness|significantly improves" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Explains normalization, clamping, and invalid-input fallback without inventing business motivation.",
+        "Does not produce empty rollout, screenshot, migration, or issue sections.",
+        "Reports tests honestly and remains useful to a future reader."
+      ]
+    },
+    {
+      "id": "gitlab-template",
+      "description": "Detect GitLab terminology and preserve the sole merge-request description template.",
+      "fixture": "gitlab-pr",
+      "prompt": "Use the pr-description skill to draft the merge request description for head {head} into base {base}. Detect the provider and template from the repository. Output the paste-ready body only and do not publish it.",
+      "assertions": [
+        { "kind": "regex", "pattern": "## Outcome" },
+        { "kind": "regex", "pattern": "## Verification" },
+        { "kind": "regex", "pattern": "## Compatibility and rollout" },
+        { "kind": "regex", "pattern": "## Review guidance" },
+        { "kind": "regex", "pattern": "CSV" },
+        { "kind": "not_regex", "pattern": "\\A\\s*```(?:markdown)?" },
+        { "kind": "git_clean" }
+      ],
+      "manual_rubric": [
+        "Uses GitLab merge-request terminology and the repository's only template.",
+        "Explains CSV escaping and validation without inventing download UI or product requirements.",
+        "Separates test execution from code coverage and keeps rollout claims proportional."
+      ]
+    }
+  ]
+}

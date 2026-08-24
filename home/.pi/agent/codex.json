@@ -1,0 +1,11 @@
+{
+  "preset": "work",
+  "serviceTier": "priority",
+  "statusline": [
+    "preset",
+    "fast",
+    "context",
+    "usage",
+    "credits"
+  ]
+}

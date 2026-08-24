@@ -1,0 +1,36 @@
+{
+  "lastChangelogVersion": "0.84.2",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-luna",
+  "defaultThinkingLevel": "xhigh",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-luna",
+    "openai-codex/gpt-5.6-sol"
+  ],
+  "hideThinkingBlock": false,
+  "collapseChangelog": true,
+  "defaultProjectTrust": "never",
+  "sessionDir": "~/.pi/agent/sessions",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 32768,
+    "keepRecentTokens": 30000
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3,
+    "baseDelayMs": 1000
+  },
+  "packages": [
+    "git:github.com/Shopify/Shopify-AI-Toolkit"
+  ],
+  "theme": "Github Dark",
+  "fullscreenScrollbar": "auto",
+  "tuiMode": "fullscreen",
+  "showCacheMissNotices": true,
+  "enableSkillCommands": true,
+  "markdown": {
+    "mermaid": "final"
+  },
+  "transport": "auto"
+}

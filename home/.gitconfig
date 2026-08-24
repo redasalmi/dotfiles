@@ -1,0 +1,39 @@
+[push]
+	autoSetupRemote = true
+	default = simple
+	followTags = true
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+	updateRefs = true
+[core]
+	editor = zed
+[merge]
+	tool = zed
+	conflictStyle = zdiff3
+	autoStash = true
+	cleanup = scissors
+[mergetool]
+	keepBackup = false
+[rerere]
+	enabled = true
+	autoUpdate = true
+[diff]
+	algorithm = histogram
+	colorMoved = zebra
+[commit]
+	verbose = true
+[fetch]
+	prune = true
+	pruneTags = true
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[mergetool "zed"]
+	cmd = zed --wait \"$MERGED\"
+	trustExitCode = false
