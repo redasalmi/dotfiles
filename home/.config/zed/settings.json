@@ -104,6 +104,13 @@
       "formatter": "prettier",
     },
     "Liquid": {
+      "prettier": {
+        "allowed": true,
+        "parser": "liquid-html",
+        "plugins": [
+          "@shopify/prettier-plugin-liquid"
+        ],
+      },
       "language_servers": [
         "liquid",
         "liquid-embedded-javascript",
